@@ -1,0 +1,81 @@
+import 'package:flutter/material.dart';
+
+import 'package:get/get.dart';
+
+import '../controllers/home_controller.dart';
+
+class HomeView extends GetView<HomeController> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: Text('HomeView'),
+          centerTitle: true,
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              TextField(
+                controller: controller.nameTextEditingController,
+                decoration: const InputDecoration(
+                  hintText: "Name",
+                  labelText: "Name",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(8),
+                    ),
+                  ),
+                  isDense: true,
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              TextField(
+                controller: controller.addressTextEditingController,
+                decoration: const InputDecoration(
+                  hintText: "Address",
+                  labelText: "Address",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(8),
+                    ),
+                  ),
+                  isDense: true,
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  controller.addEmployee(
+                      controller.nameTextEditingController.text,
+                      controller.addressTextEditingController.text);
+                },
+                child: const Text("Add Employee"),
+              ),
+              Expanded(
+                  child: Obx(() =>  ListView.builder(
+                      itemCount: controller.itemcount.value,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          title: Text(controller.employees.value[index].name!),
+                          subtitle:
+                              Text(controller.employees.value[index].address!),
+                          trailing: GestureDetector(
+                              onTap: () {
+                                controller.removeEmployee(index);
+                              },
+                              child: Icon(
+                                Icons.delete,
+                                color: Colors.red,
+                              )),
+                        );
+                      }))),
+            ],
+          ),
+        ));
+  }
+}
